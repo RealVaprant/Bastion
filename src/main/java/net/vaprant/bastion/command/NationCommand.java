@@ -1,0 +1,45 @@
+package net.vaprant.bastion.command;
+
+import net.kyori.adventure.text.Component;
+import net.vaprant.bastion.command.subcommand.CreateNation;
+import net.vaprant.bastion.command.subcommand.NationSubCommand;
+import net.vaprant.bastion.util.BastionNotification;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.HashMap;
+
+public class NationCommand implements CommandExecutor {
+
+    private final HashMap<String, NationSubCommand> subCommands = new HashMap<>();
+    private final String arguments;
+
+    public NationCommand(HashMap<String, NationSubCommand> subCommands) {
+
+        // This creates the usage string, without having to repeat the same arguments.
+        this.arguments = "(" + String.join("|", subCommands.keySet()) + ")";
+
+
+    }
+
+    @Override
+    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String @NotNull [] args) {
+
+        if (args.length == 0) {
+            BastionNotification.error(commandSender, "/" + command.getName() + " " + arguments);
+            return true;
+        }
+
+        NationSubCommand nationSubCommand = subCommands.get(args[0]);
+        if (nationSubCommand == null) {
+            BastionNotification.error(commandSender, "/" + command.getName() + " " + arguments);
+            return true;
+        }
+
+        nationSubCommand.execute(commandSender, args);
+
+        return true;
+    }
+}

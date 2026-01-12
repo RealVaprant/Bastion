@@ -2,3 +2,8 @@ name: Bastion
 version: '1.0-SNAPSHOT'
 main: net.vaprant.bastion.Bastion
 api-version: '1.21'
+
+commands:
+  nation:
+    description: Central command for managing nations
+    usage: /nation
