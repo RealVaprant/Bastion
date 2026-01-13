@@ -11,7 +11,7 @@ public class BastionPlayer {
     public static final BastionPlayerRegistry registry = new BastionPlayerRegistry();
 
 
-    private final UUID uuid;
+    public final UUID uuid;
     private Nation nation;
 
     public BastionPlayer(UUID uuid, Nation nation) {
@@ -21,7 +21,7 @@ public class BastionPlayer {
 
     public BastionPlayer(UUID playerId) {
         this.uuid = playerId;
-        Nation nation = this.nation = Nation.registry.getNationByMember(playerId);
+        this.nation = Nation.registry.getNationByMember(playerId);
 
     }
 
@@ -37,10 +37,6 @@ public class BastionPlayer {
 
     public void setNation(Nation nation) {
         this.nation = nation;
-    }
-
-    public UUID getUniqueId() {
-        return uuid;
     }
 
 }

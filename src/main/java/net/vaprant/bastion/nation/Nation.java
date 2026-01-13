@@ -6,8 +6,11 @@ import net.vaprant.bastion.player.BastionPlayer;
 import net.vaprant.bastion.player.BastionPlayerRegistry;
 import net.vaprant.bastion.util.BastionNotification;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 public class Nation {
@@ -15,7 +18,7 @@ public class Nation {
 
     public final UUID uuid;
     public String name;
-    public HashMap<UUID, Authority> members;
+    private final HashMap<UUID, Authority> members;
 
     public Nation(String name) {
         this.uuid = UUID.randomUUID();
@@ -32,15 +35,33 @@ public class Nation {
     }
 
     public void addMember(BastionPlayer bastionPlayer, Authority authority) {
-        members.put(bastionPlayer.getUniqueId(), authority);
+        members.put(bastionPlayer.uuid, authority);
         bastionPlayer.setNation(this);
 
         //TODO: Update the nation in disk.
     }
 
+    public void getAuthority(BastionPlayer bastionPlayer) {
+        this.members.get(bastionPlayer.uuid);
+    }
+
+    public List<Player> getOnlineMembers(){
+
+        List<Player> onlinePlayers = new ArrayList<>();
+        for (UUID uuid : members.keySet()){
+
+            Player player = Bukkit.getPlayer(uuid);
+
+            if (player != null) {
+                onlinePlayers.add(player);
+            }
+        }
+        return onlinePlayers;
+    }
+
     public void removeMember(BastionPlayer bastionPlayer) {
 
-        this.members.remove(bastionPlayer.getUniqueId());
+        this.members.remove(bastionPlayer.uuid);
         bastionPlayer.setNation(null);
 
         if (this.members.isEmpty()) {
@@ -51,6 +72,18 @@ public class Nation {
                             .color(NamedTextColor.RED)));
         }
 
+    }
+
+    public void broadcastActionBar(Component message) {
+        for (Player player : getOnlineMembers()) {
+            player.sendActionBar(message);
+        }
+    }
+
+    public void broadcast(Component message) {
+        for (Player player : getOnlineMembers()) {
+            player.sendMessage(message);
+        }
     }
 
     public void disband() {

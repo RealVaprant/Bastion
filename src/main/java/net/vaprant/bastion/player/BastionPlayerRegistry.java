@@ -15,7 +15,7 @@ public class BastionPlayerRegistry {
     }
 
     public void addPlayer(BastionPlayer bastionPlayer) {
-        this.registry.put(bastionPlayer.getUniqueId(), bastionPlayer);
+        this.registry.put(bastionPlayer.uuid, bastionPlayer);
     }
 
 
