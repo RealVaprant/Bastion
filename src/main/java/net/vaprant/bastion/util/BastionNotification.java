@@ -25,14 +25,14 @@ public class BastionNotification {
         directMessage(sender, Component.text(message).color(TextColor.color(0xA5FF)));
     }
     public static void info(CommandSender sender, Component message) {
-        directMessage(sender, Component.empty().color(TextColor.color(0xA5FF)).append(message));
+        directMessage(sender, message.color(TextColor.color(0xA5FF)));
     }
 
     public static void broadcast(String message) {
         Bukkit.broadcast(Component.text(message).color(TextColor.color(0xA5FF)));
     }
     public static void broadcast(Component message) {
-        Bukkit.broadcast(Component.empty().color(TextColor.color(0xA5FF)).append(message));
+        Bukkit.broadcast(message.color(TextColor.color(0xA5FF)));
     }
 
     private static void directMessage(CommandSender sender, Component message) {
@@ -43,5 +43,6 @@ public class BastionNotification {
             sender.sendMessage(message);
         }
     }
+
 
 }
