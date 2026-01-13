@@ -1,8 +1,10 @@
 package net.vaprant.bastion.nation;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.vaprant.bastion.player.BastionPlayer;
 import net.vaprant.bastion.player.BastionPlayerRegistry;
+import net.vaprant.bastion.util.BastionNotification;
 import org.bukkit.Bukkit;
 
 import java.util.HashMap;
@@ -43,8 +45,12 @@ public class Nation {
 
         if (this.members.isEmpty()) {
             this.disband();
-            Bukkit.broadcast(Component.text(""));
+            BastionNotification.broadcast(
+                    Component.text(this.name).color(NamedTextColor.YELLOW)
+                    .append(Component.text(" has been disbanded.")
+                            .color(NamedTextColor.RED)));
         }
+
     }
 
     public void disband() {

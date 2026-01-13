@@ -1,5 +1,8 @@
 package net.vaprant.bastion.command.subcommand;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 import net.vaprant.bastion.player.BastionPlayer;
 import net.vaprant.bastion.util.BastionNotification;
 import org.bukkit.command.CommandSender;
@@ -19,7 +22,16 @@ public class LeaveNation implements NationSubCommand{
             BastionNotification.error(player, "You are not in a nation.");
         }
         else {
-            BastionNotification.info(player, "You are no longer in " + bastionPlayer.getNation().name + ".");
+
+
+            BastionNotification.info(player, Component.text(
+                            "You are no longer in "
+                    ).append(Component.text(
+                                    bastionPlayer.getNation().name
+                            ).color(NamedTextColor.YELLOW)
+                    ).append(Component.text("."))
+            );
+
             bastionPlayer.getNation().removeMember(bastionPlayer);
         }
 
