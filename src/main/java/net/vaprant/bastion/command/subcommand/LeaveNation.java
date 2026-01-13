@@ -36,7 +36,7 @@ public class LeaveNation implements NationSubCommand{
 
 
             nation.removeMember(bastionPlayer);
-            if (nation != null) {
+            if (!nation.isDisbaned) {
                 nation.broadcast(Component.text(
                         player.getName() + " left the nation."
                 ).color(TextColor.color(0xA5FF)));

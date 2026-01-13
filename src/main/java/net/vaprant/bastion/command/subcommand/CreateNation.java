@@ -57,9 +57,8 @@ public class CreateNation implements NationSubCommand {
 
         Bukkit.broadcast(
                 Component.empty().color(TextColor.color(0xA5FF))
-                        .append(Component.text("Nation ")
-                                .append(Component.text(nationName).color(NamedTextColor.YELLOW)))
-                        .append(Component.text(" has been created!"))
+                        .append(Component.text(nationName).color(NamedTextColor.YELLOW))
+                        .append(Component.text(" has been declared a nation!"))
         );
 
 

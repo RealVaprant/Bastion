@@ -19,6 +19,7 @@ public class Nation {
     public final UUID uuid;
     public String name;
     private final HashMap<UUID, Authority> members;
+    public boolean isDisbaned = false;
 
     public Nation(String name) {
         this.uuid = UUID.randomUUID();
@@ -41,8 +42,8 @@ public class Nation {
         //TODO: Update the nation in disk.
     }
 
-    public void getAuthority(BastionPlayer bastionPlayer) {
-        this.members.get(bastionPlayer.uuid);
+    public Authority getAuthority(BastionPlayer bastionPlayer) {
+        return this.members.get(bastionPlayer.uuid);
     }
 
     public List<Player> getOnlineMembers(){
@@ -88,6 +89,7 @@ public class Nation {
 
     public void disband() {
         Nation.registry.removeNation(this);
+        this.isDisbaned = true;
         //TODO: Delete nation from disk.
     }
 }
