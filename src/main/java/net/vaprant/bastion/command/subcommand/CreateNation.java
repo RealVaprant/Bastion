@@ -69,7 +69,8 @@ public class CreateNation implements NationSubCommand {
 
         }
         else {
-            BastionNotification.warning(sender, "An empty nation has been created. Please add people.");
+            //TODO: update the message to provide instructions on how to add members to nations from console.
+            BastionNotification.warning(sender, "An empty nation has been created.");
         }
 
 

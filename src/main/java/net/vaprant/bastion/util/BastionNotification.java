@@ -26,6 +26,10 @@ public class BastionNotification {
         directMessage(sender, message.color(TextColor.color(0xA5FF)));
     }
 
+    public static void info(CommandSender sender, String message) {
+        directMessage(sender, Component.text(message).color(TextColor.color(0xA5FF)));
+    }
+
     public static void info(Nation nation, Component message) {
         nation.broadcast(message.color(TextColor.color(0xA5FF)));
     }

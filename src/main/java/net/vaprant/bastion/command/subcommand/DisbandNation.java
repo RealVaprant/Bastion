@@ -35,6 +35,8 @@ public class DisbandNation implements NationSubCommand {
                     Component.text(nation.name).color(NamedTextColor.YELLOW)).append(
                     Component.text(" has disbanded.")
                     ));
+
+            BastionNotification.info(player, "Your nation has disbanded.");
         }
         else {
             BastionNotification.error(player, "Your authority is insufficient.");
