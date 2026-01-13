@@ -19,12 +19,28 @@ public class BastionPlayer {
         this.nation = nation;
     }
 
+    public BastionPlayer(UUID playerId) {
+        this.uuid = playerId;
+        Nation nation = this.nation = Nation.registry.getNationByMember(playerId);
+
+    }
+
 
 
     public OfflinePlayer getPlayer() {
         return Bukkit.getPlayer(uuid);
     }
+
+    public Nation getNation() {
+        return nation;
+    }
+
+    public void setNation(Nation nation) {
+        this.nation = nation;
+    }
+
     public UUID getUniqueId() {
         return uuid;
     }
+
 }

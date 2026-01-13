@@ -1,12 +1,19 @@
 package net.vaprant.bastion.command.subcommand;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.util.ARGBLike;
 import net.vaprant.bastion.nation.Authority;
 import net.vaprant.bastion.nation.Nation;
 import net.vaprant.bastion.player.BastionPlayer;
 import net.vaprant.bastion.util.BastionNotification;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import javax.inject.Named;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -15,40 +22,58 @@ public class CreateNation implements NationSubCommand {
     @Override
     public void execute(CommandSender sender, String[] args) {
 
+        BastionPlayer bastionPlayer = null;
+
         if (sender instanceof Player player) {
-            BastionPlayer.registry.getPlayer(player.getUniqueId());
+
+            bastionPlayer = BastionPlayer.registry.getPlayer(player.getUniqueId());
+
+            if (bastionPlayer.getNation() != null) {
+                BastionNotification.error(sender, "You're already in a nation.");
+                return;
+            }
+
         }
 
 
+
         //TODO: Add name constraints
-        if (args.length == 2) {
+        if (args.length == 1) {
             BastionNotification.error(sender, "bro, set a name please.");
             return;
         }
 
-        if (args.length > 3) {
+        if (args.length > 2) {
             BastionNotification.error(sender, "Spaces?? come on..");
             return;
         }
 
-        UUID uuid = UUID.randomUUID();
-        String name = args[2];
-        HashMap<UUID, Authority> members = new HashMap<>();
+        String nationName = args[1];
+
+
+        //TODO: Serialize Nation, and save it to disk
+        Nation nation = new Nation(nationName);
+        Nation.registry.addNation(nation);
+
+        Bukkit.broadcast(
+                Component.empty().color(TextColor.color(0xA5FF))
+                        .append(Component.text("Nation ")
+                                .append(Component.text(nationName).color(NamedTextColor.YELLOW)))
+                        .append(Component.text(" has been created!"))
+        );
+
 
         if (sender instanceof Player player) {
 
-            members.put(player.getUniqueId(), Authority.OWNER);
-
+            nation.addMember(bastionPlayer, Authority.OWNER);
             BastionNotification.success(player, "Your nation has started!");
+
         }
         else {
             BastionNotification.warning(sender, "An empty nation has been created. Please add people.");
         }
 
-        Nation nation = new Nation(uuid, name, members);
-        Nation.registry.addNation(nation);
 
 
-        //TODO: Serialize Nation, and save it to disk
     }
 }

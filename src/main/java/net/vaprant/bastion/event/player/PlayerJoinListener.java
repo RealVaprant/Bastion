@@ -13,11 +13,7 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
 
-        UUID playerId = event.getPlayer().getUniqueId();
-
-        Nation nation = Nation.registry.getNationByMember(playerId);
-
-        BastionPlayer bastionPlayer = new BastionPlayer(playerId, nation);
+        BastionPlayer bastionPlayer = new BastionPlayer(event.getPlayer().getUniqueId());
 
         BastionPlayer.registry.addPlayer(bastionPlayer);
     }

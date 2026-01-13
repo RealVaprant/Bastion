@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component;
 import net.vaprant.bastion.command.subcommand.CreateNation;
 import net.vaprant.bastion.command.subcommand.NationSubCommand;
 import net.vaprant.bastion.util.BastionNotification;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,7 +14,7 @@ import java.util.HashMap;
 
 public class NationCommand implements CommandExecutor {
 
-    private final HashMap<String, NationSubCommand> subCommands = new HashMap<>();
+    private final HashMap<String, NationSubCommand> subCommands;
     private final String arguments;
 
     public NationCommand(HashMap<String, NationSubCommand> subCommands) {
@@ -21,7 +22,7 @@ public class NationCommand implements CommandExecutor {
         // This creates the usage string, without having to repeat the same arguments.
         this.arguments = "(" + String.join("|", subCommands.keySet()) + ")";
 
-
+        this.subCommands = subCommands;
     }
 
     @Override
@@ -33,13 +34,13 @@ public class NationCommand implements CommandExecutor {
         }
 
         NationSubCommand nationSubCommand = subCommands.get(args[0]);
+
         if (nationSubCommand == null) {
             BastionNotification.error(commandSender, "/" + command.getName() + " " + arguments);
             return true;
         }
 
         nationSubCommand.execute(commandSender, args);
-
         return true;
     }
 }
