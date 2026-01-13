@@ -39,4 +39,5 @@ public class BastionPlayer {
         this.nation = nation;
     }
 
+
 }

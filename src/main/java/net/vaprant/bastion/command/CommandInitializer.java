@@ -1,10 +1,7 @@
 package net.vaprant.bastion.command;
 
 
-import net.vaprant.bastion.command.subcommand.CreateNation;
-import net.vaprant.bastion.command.subcommand.DisbandNation;
-import net.vaprant.bastion.command.subcommand.LeaveNation;
-import net.vaprant.bastion.command.subcommand.NationSubCommand;
+import net.vaprant.bastion.command.subcommand.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
@@ -17,6 +14,7 @@ public class CommandInitializer {
         subCommands.put("create", new CreateNation());
         subCommands.put("disband", new DisbandNation());
         subCommands.put("leave", new LeaveNation());
+        subCommands.put("rename", new RenameNation());
 
         Objects.requireNonNull(plugin.getCommand("nation")).setExecutor(new NationCommand(subCommands));
         Objects.requireNonNull(plugin.getCommand("nation")).setTabCompleter(new NationTabCompleter(subCommands));
