@@ -3,30 +3,24 @@ package net.vaprant.bastion.command.subcommand;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
-import net.kyori.adventure.text.format.TextDecoration;
-import net.kyori.adventure.util.ARGBLike;
 import net.vaprant.bastion.nation.Authority;
 import net.vaprant.bastion.nation.Nation;
-import net.vaprant.bastion.player.BastionPlayer;
+import net.vaprant.bastion.player.BastionProfile;
 import net.vaprant.bastion.util.BastionNotification;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import javax.inject.Named;
-import java.util.HashMap;
-import java.util.UUID;
 
 public class CreateNation implements NationSubCommand {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
 
-        BastionPlayer bastionPlayer = null;
+        BastionProfile bastionPlayer = null;
 
         if (sender instanceof Player player) {
 
-            bastionPlayer = BastionPlayer.registry.getPlayer(player.getUniqueId());
+            bastionPlayer = BastionProfile.registry.getPlayer(player.getUniqueId());
 
             if (bastionPlayer.getNation() != null) {
                 BastionNotification.error(sender, "You're already in a nation.");

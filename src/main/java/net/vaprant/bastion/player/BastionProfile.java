@@ -6,20 +6,20 @@ import org.bukkit.OfflinePlayer;
 
 import java.util.UUID;
 
-public class BastionPlayer {
+public class BastionProfile {
 
-    public static final BastionPlayerRegistry registry = new BastionPlayerRegistry();
+    public static final BastionProfileRegistry registry = new BastionProfileRegistry();
 
 
     public final UUID uuid;
     private Nation nation;
 
-    public BastionPlayer(UUID uuid, Nation nation) {
+    public BastionProfile(UUID uuid, Nation nation) {
         this.uuid = uuid;
         this.nation = nation;
     }
 
-    public BastionPlayer(UUID playerId) {
+    public BastionProfile(UUID playerId) {
         this.uuid = playerId;
         this.nation = Nation.registry.getNationByMember(playerId);
 
@@ -40,7 +40,7 @@ public class BastionPlayer {
     }
 
     public boolean isOnline() {
-        return BastionPlayer.registry.containsPlayer(this.uuid);
+        return BastionProfile.registry.containsPlayer(this.uuid);
     }
 
 

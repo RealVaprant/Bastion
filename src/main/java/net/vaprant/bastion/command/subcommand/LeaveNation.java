@@ -4,7 +4,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.vaprant.bastion.nation.Nation;
-import net.vaprant.bastion.player.BastionPlayer;
+import net.vaprant.bastion.player.BastionProfile;
 import net.vaprant.bastion.util.BastionNotification;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -17,7 +17,7 @@ public class LeaveNation implements NationSubCommand{
             return;
         }
 
-        BastionPlayer bastionPlayer = BastionPlayer.registry.getPlayer(player.getUniqueId());
+        BastionProfile bastionPlayer = BastionProfile.registry.getPlayer(player.getUniqueId());
         Nation nation = bastionPlayer.getNation();
 
         if (nation == null) {

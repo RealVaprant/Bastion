@@ -1,20 +1,16 @@
 package net.vaprant.bastion.player;
 
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
-
 import java.util.HashMap;
-import java.util.Optional;
 import java.util.UUID;
 
-public class BastionPlayerRegistry {
-    private final HashMap<UUID, BastionPlayer> registry;
+public class BastionProfileRegistry {
+    private final HashMap<UUID, BastionProfile> registry;
 
-    public BastionPlayerRegistry() {
+    public BastionProfileRegistry() {
         this.registry = new HashMap<>();
     }
 
-    public void addPlayer(BastionPlayer bastionPlayer) {
+    public void addPlayer(BastionProfile bastionPlayer) {
         this.registry.put(bastionPlayer.uuid, bastionPlayer);
     }
 
@@ -23,7 +19,7 @@ public class BastionPlayerRegistry {
         this.registry.remove(uuid);
     }
 
-    public BastionPlayer getPlayer(UUID uuid) {
+    public BastionProfile getPlayer(UUID uuid) {
         return this.registry.get(uuid);
     }
 

@@ -7,7 +7,7 @@ import net.kyori.adventure.text.format.TextDecoration;
 import net.vaprant.bastion.Bastion;
 import net.vaprant.bastion.nation.Authority;
 import net.vaprant.bastion.nation.Nation;
-import net.vaprant.bastion.player.BastionPlayer;
+import net.vaprant.bastion.player.BastionProfile;
 import net.vaprant.bastion.util.BastionNotification;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -23,7 +23,7 @@ public class JoinNation implements NationSubCommand {
             return;
         }
 
-        BastionPlayer bastionPlayer = BastionPlayer.registry.getPlayer(player.getUniqueId());
+        BastionProfile bastionPlayer = BastionProfile.registry.getPlayer(player.getUniqueId());
 
         if (bastionPlayer.getNation() != null) {
             BastionNotification.error(player, "You belong to another nation right now.");

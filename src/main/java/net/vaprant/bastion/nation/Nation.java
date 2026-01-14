@@ -2,7 +2,7 @@ package net.vaprant.bastion.nation;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.vaprant.bastion.player.BastionPlayer;
+import net.vaprant.bastion.player.BastionProfile;
 import net.vaprant.bastion.util.BastionNotification;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -43,7 +43,7 @@ public class Nation {
         return (this.members.containsKey(playerId));
     }
 
-    public void addMember(BastionPlayer bastionPlayer, Authority authority) {
+    public void addMember(BastionProfile bastionPlayer, Authority authority) {
         members.put(bastionPlayer.uuid, authority);
         bastionPlayer.setNation(this);
 
@@ -84,12 +84,12 @@ public class Nation {
     }
 
 
-    public Authority getAuthority(BastionPlayer bastionPlayer) {
+    public Authority getAuthority(BastionProfile bastionPlayer) {
         return this.members.get(bastionPlayer.uuid);
     }
 
-    public BastionPlayer getOwner() {
-        return BastionPlayer.registry.getPlayer(this.ownerId);
+    public BastionProfile getOwner() {
+        return BastionProfile.registry.getPlayer(this.ownerId);
     }
 
     public List<Player> getOnlineMembers(){
@@ -116,22 +116,31 @@ public class Nation {
         return offlinePlayers;
     }
 
-    public void removeMember(BastionPlayer bastionPlayer) {
+    public List<BastionProfile> getMemberProfiles(){
+        List<BastionProfile> list = new ArrayList<>();
+        for (UUID uuid : members.keySet()) {
+            BastionProfile bp = BastionProfile.registry.getPlayer(uuid);
+            if (bp != null) {
+                list.add(bp);
+            }
+        }
+        return list;
+    }
 
-        this.members.remove(bastionPlayer.uuid);
-        bastionPlayer.setNation(null);
+    public void removeMember(BastionProfile bastionProfile) {
+        bastionProfile.setNation(null);
+        this.members.remove(bastionProfile.uuid);
 
         if (this.members.isEmpty()) {
             this.disband();
             BastionNotification.broadcast(
                     Component.text(this.name).color(NamedTextColor.YELLOW)
-                    .append(Component.text(" has been disbanded.")
-                            .color(NamedTextColor.RED)));
+                            .append(Component.text(" has been disbanded.")
+                                    .color(NamedTextColor.RED)));
         }
-
     }
 
-    public void setOwner(BastionPlayer bastionPlayer) {
+    public void setOwner(BastionProfile bastionPlayer) {
         this.ownerId = bastionPlayer.uuid;
     }
 
@@ -154,7 +163,7 @@ public class Nation {
 
     public void disband() {
         for (Player player : getOnlineMembers()){
-            BastionPlayer.registry.getPlayer(player.getUniqueId()).setNation(null);
+            BastionProfile.registry.getPlayer(player.getUniqueId()).setNation(null);
         }
         Nation.registry.removeNation(this);
         this.isDisbanded = true;
