@@ -13,6 +13,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.List;
+
 public class JoinNation implements NationSubCommand {
 
     @Override
@@ -120,5 +122,13 @@ public class JoinNation implements NationSubCommand {
 
 
 
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, String[] args) {
+        if (args.length == 2) {
+            return Nation.registry.getAllNationNames();
+        }
+        return List.of();
     }
 }

@@ -4,6 +4,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -44,6 +45,12 @@ public class NationRegistry {
 
     public boolean isNation(String name) {
         return this.nameIndex.containsKey(name);
+    }
+
+    public List<String> getAllNationNames() {
+        return registry.values().stream()
+                .map(nation -> nation.name)
+                .toList();
     }
 
     public Nation getNationByMember(UUID uuid) {

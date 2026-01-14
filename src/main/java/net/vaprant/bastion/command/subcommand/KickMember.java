@@ -11,6 +11,10 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+
 public class KickMember implements NationSubCommand{
 
     @Override
@@ -45,11 +49,16 @@ public class KickMember implements NationSubCommand{
             return;
         }
 
+        if (subject.getUniqueId() == player.getUniqueId()){
+            BastionNotification.error(player, "You cannot kick yourself.");
+            return;
+        }
+
         BastionProfile bastionProfile = BastionProfile.registry.getPlayer(subject.getUniqueId());
         nation.removeMember(bastionProfile);
 
         BastionNotification.infoMessage(nation,
-                Component.text(player.getName() + " kicked " + subject.getName() + " from your nation.")
+                Component.text(player.getName() + " kicked " + subject.getName() + " from the nation.")
         );
         BastionNotification.success(player, subject.getName() + " was kicked from your nation.");
 
@@ -61,5 +70,28 @@ public class KickMember implements NationSubCommand{
                             Component.text(".")
                     )));
         }
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, String[] args) {
+        if (!(sender instanceof Player player)) {
+            return List.of();
+        }
+        if (args.length == 2){
+            BastionProfile profile = BastionProfile.registry.getPlayer(player.getUniqueId());
+            Nation nation = profile.getNation();
+
+            if (nation == null){
+                return List.of();
+            }
+
+            return nation.getMembers().stream()
+                    .map(OfflinePlayer::getName)
+                    .filter(Objects::nonNull)
+                    .toList();
+        }
+
+
+        return List.of();
     }
 }

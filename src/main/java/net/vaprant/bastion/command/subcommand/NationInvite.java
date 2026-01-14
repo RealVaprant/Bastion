@@ -14,6 +14,8 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 public class NationInvite implements NationSubCommand {
@@ -122,5 +124,10 @@ public class NationInvite implements NationSubCommand {
                     recipient.getName() +
                     " to join your nation."
                 ));
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, String[] args) {
+        return Bukkit.getServer().getOnlinePlayers().stream().map(Player::getName).toList();
     }
 }

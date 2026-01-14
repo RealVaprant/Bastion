@@ -10,20 +10,27 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class NationTabCompleter implements TabCompleter {
 
-    private final List<String> arguments;
+    private final Map<String, NationSubCommand> subCommands;
 
-    public NationTabCompleter(HashMap<String, NationSubCommand> subCommands) {
-        this.arguments = new ArrayList<>(subCommands.keySet());
+    public NationTabCompleter(Map<String, NationSubCommand> subCommands) {
+        this.subCommands = subCommands;
     }
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String @NotNull [] args) {
         if (args.length == 1) {
-            return arguments;
+            return new ArrayList<>(subCommands.keySet());
         }
-        return null;
+
+        NationSubCommand subCommand = subCommands.get(args[0]);
+        if (subCommand != null){
+            return subCommand.onTabComplete(commandSender, args);
+        }
+
+        return List.of();
     }
 }
