@@ -3,28 +3,31 @@ package net.vaprant.bastion.nation;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.vaprant.bastion.player.BastionPlayer;
-import net.vaprant.bastion.player.BastionPlayerRegistry;
 import net.vaprant.bastion.util.BastionNotification;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class Nation {
     public static final NationRegistry registry = new NationRegistry();
 
     public final UUID uuid;
     public String name;
+    public UUID ownerId;
     private final HashMap<UUID, Authority> members;
-    public boolean isDisbaned = false;
+    private final Map<UUID, Integer> invitations;
+    private final Map<UUID, Integer> joinRequests;
+    public boolean isDisbanded = false;
 
-    public Nation(String name) {
+    public Nation(String name, UUID ownerId) {
         this.uuid = UUID.randomUUID();
         this.name = name;
         this.members = new HashMap<>();
+        this.invitations = new HashMap<>();
+        this.joinRequests = new HashMap<>() {
+        };
     }
 
     public UUID getUniqueId() {
@@ -35,6 +38,11 @@ public class Nation {
         return this.members.get(uuid) != null;
     }
 
+    public boolean isMember(String username) {
+        UUID playerId = Bukkit.getPlayerUniqueId(username);
+        return (this.members.containsKey(playerId));
+    }
+
     public void addMember(BastionPlayer bastionPlayer, Authority authority) {
         members.put(bastionPlayer.uuid, authority);
         bastionPlayer.setNation(this);
@@ -42,8 +50,46 @@ public class Nation {
         //TODO: Update the nation in disk.
     }
 
+    public void addInvitation(UUID uuid, int taskId){
+        invitations.put(uuid, taskId);
+    }
+
+    public void removeInvitation(UUID uuid){
+        invitations.remove(uuid);
+    }
+
+    public Integer getInviteTask(UUID uuid) {
+        return invitations.get(uuid);
+    }
+
+    public void addJoinRequest(UUID uuid, int taskId){
+        joinRequests.put(uuid, taskId);
+    }
+
+    public void removeJoinRequest(UUID uuid){
+        joinRequests.remove(uuid);
+    }
+
+    public Integer getJoinRequsetTask(UUID uuid){
+        return joinRequests.get(uuid);
+    }
+
+
+    public boolean isInvited(UUID uuid){
+        return invitations.containsKey(uuid);
+    }
+
+    public boolean isRequestingJoin(UUID uuid){
+        return joinRequests.containsKey(uuid);
+    }
+
+
     public Authority getAuthority(BastionPlayer bastionPlayer) {
         return this.members.get(bastionPlayer.uuid);
+    }
+
+    public BastionPlayer getOwner() {
+        return BastionPlayer.registry.getPlayer(this.ownerId);
     }
 
     public List<Player> getOnlineMembers(){
@@ -58,6 +104,16 @@ public class Nation {
             }
         }
         return onlinePlayers;
+    }
+
+    public Set<OfflinePlayer> getMembers(){
+
+        Set<OfflinePlayer> offlinePlayers = new HashSet<>();
+        for (UUID uuid : members.keySet()){
+
+            offlinePlayers.add(Bukkit.getOfflinePlayer(uuid));
+        }
+        return offlinePlayers;
     }
 
     public void removeMember(BastionPlayer bastionPlayer) {
@@ -75,6 +131,10 @@ public class Nation {
 
     }
 
+    public void setOwner(BastionPlayer bastionPlayer) {
+        this.ownerId = bastionPlayer.uuid;
+    }
+
     public void broadcastActionBar(Component message) {
         for (Player player : getOnlineMembers()) {
             player.sendActionBar(message);
@@ -87,9 +147,17 @@ public class Nation {
         }
     }
 
+    public void rename(String name) {
+        Nation.registry.renameNation(this, name);
+        this.name = name;
+    }
+
     public void disband() {
+        for (Player player : getOnlineMembers()){
+            BastionPlayer.registry.getPlayer(player.getUniqueId()).setNation(null);
+        }
         Nation.registry.removeNation(this);
-        this.isDisbaned = true;
+        this.isDisbanded = true;
         //TODO: Delete nation from disk.
     }
 }

@@ -30,8 +30,16 @@ public class BastionNotification {
         directMessage(sender, Component.text(message).color(TextColor.color(0xA5FF)));
     }
 
-    public static void info(Nation nation, Component message) {
+    public static void infoMessage(CommandSender sender, Component message) {
+        sender.sendMessage(message.color(TextColor.color(0xA5FF)));
+    }
+
+    public static void infoMessage(Nation nation, Component message) {
         nation.broadcast(message.color(TextColor.color(0xA5FF)));
+    }
+
+    public static void info(Nation nation, Component message) {
+        nation.broadcastActionBar(message.color(TextColor.color(0xA5FF)));
     }
 
     public static void broadcast(String message) {

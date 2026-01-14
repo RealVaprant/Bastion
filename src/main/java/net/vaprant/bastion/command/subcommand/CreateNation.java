@@ -52,7 +52,7 @@ public class CreateNation implements NationSubCommand {
 
 
         //TODO: Serialize Nation, and save it to disk
-        Nation nation = new Nation(nationName);
+        Nation nation = new Nation(nationName, null);
         Nation.registry.addNation(nation);
 
         Bukkit.broadcast(
@@ -65,6 +65,7 @@ public class CreateNation implements NationSubCommand {
         if (sender instanceof Player player) {
 
             nation.addMember(bastionPlayer, Authority.OWNER);
+            nation.setOwner(bastionPlayer);
             BastionNotification.success(player, "Your nation has started!");
 
         }

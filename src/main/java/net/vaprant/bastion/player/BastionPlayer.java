@@ -39,5 +39,9 @@ public class BastionPlayer {
         this.nation = nation;
     }
 
+    public boolean isOnline() {
+        return BastionPlayer.registry.containsPlayer(this.uuid);
+    }
+
 
 }

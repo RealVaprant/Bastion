@@ -26,4 +26,8 @@ public class BastionPlayerRegistry {
     public BastionPlayer getPlayer(UUID uuid) {
         return this.registry.get(uuid);
     }
+
+    public boolean containsPlayer(UUID uuid) {
+        return this.registry.containsKey(uuid);
+    }
 }

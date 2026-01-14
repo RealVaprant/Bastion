@@ -20,7 +20,7 @@ public class NationCommand implements CommandExecutor {
     public NationCommand(HashMap<String, NationSubCommand> subCommands) {
 
         // This creates the usage string, without having to repeat the same arguments.
-        this.arguments = "(" + String.join("|", subCommands.keySet()) + ")";
+        this.arguments = "( " + String.join(" | ", subCommands.keySet()) + " )";
 
         this.subCommands = subCommands;
     }

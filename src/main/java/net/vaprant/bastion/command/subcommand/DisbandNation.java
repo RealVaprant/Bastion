@@ -14,7 +14,7 @@ public class DisbandNation implements NationSubCommand {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (!(sender instanceof Player player)) {
-            BastionNotification.error(sender, "This command is for players. Please use /nation admin disband.");
+            BastionNotification.error(sender, "This command is exclusive to players. Please use /nation admin disband.");
             return;
         }
 
@@ -30,13 +30,15 @@ public class DisbandNation implements NationSubCommand {
         Authority authority = nation.getAuthority(bastionPlayer);
 
         if (authority == Authority.OWNER) {
-            nation.disband();
+
             BastionNotification.broadcast(Component.empty().append(
                     Component.text(nation.name).color(NamedTextColor.YELLOW)).append(
                     Component.text(" has disbanded.")
                     ));
 
-            BastionNotification.info(player, "Your nation has disbanded.");
+            BastionNotification.info(nation, Component.text("Your nation has disbanded."));
+
+            nation.disband();
         }
         else {
             BastionNotification.error(player, "Your authority is insufficient.");

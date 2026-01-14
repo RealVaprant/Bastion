@@ -6,7 +6,6 @@ import net.kyori.adventure.text.format.TextColor;
 import net.vaprant.bastion.nation.Nation;
 import net.vaprant.bastion.player.BastionPlayer;
 import net.vaprant.bastion.util.BastionNotification;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -14,7 +13,7 @@ public class LeaveNation implements NationSubCommand{
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (!(sender instanceof Player player)) {
-            BastionNotification.error(sender, "The console cannot join nor leave nations.");
+            BastionNotification.error(sender, "This command is exclusive to players.");
             return;
         }
 
@@ -36,7 +35,7 @@ public class LeaveNation implements NationSubCommand{
 
 
             nation.removeMember(bastionPlayer);
-            if (!nation.isDisbaned) {
+            if (!nation.isDisbanded) {
                 nation.broadcast(Component.text(
                         player.getName() + " left the nation."
                 ).color(TextColor.color(0xA5FF)));

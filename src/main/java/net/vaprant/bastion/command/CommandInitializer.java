@@ -15,6 +15,8 @@ public class CommandInitializer {
         subCommands.put("disband", new DisbandNation());
         subCommands.put("leave", new LeaveNation());
         subCommands.put("rename", new RenameNation());
+        subCommands.put("invite", new NationInvite());
+        subCommands.put("join", new JoinNation());
 
         Objects.requireNonNull(plugin.getCommand("nation")).setExecutor(new NationCommand(subCommands));
         Objects.requireNonNull(plugin.getCommand("nation")).setTabCompleter(new NationTabCompleter(subCommands));

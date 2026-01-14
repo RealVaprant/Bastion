@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.vaprant.bastion.nation.Authority;
 import net.vaprant.bastion.nation.Nation;
+import net.vaprant.bastion.nation.NationRegistry;
 import net.vaprant.bastion.player.BastionPlayer;
 import net.vaprant.bastion.util.BastionNotification;
 import org.bukkit.command.CommandSender;
@@ -16,7 +17,7 @@ public class RenameNation implements NationSubCommand {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (!(sender instanceof Player player)) {
-            BastionNotification.error(sender, "You are not in a nation.");
+            BastionNotification.error(sender, "This command is exclusive to players.");
             return;
         }
 
@@ -45,21 +46,19 @@ public class RenameNation implements NationSubCommand {
         }
 
         if (Objects.equals(args[1], nation.name)) {
-            BastionNotification.error(player, "Your nation already has this name.");
+            BastionNotification.error(player, "Your nation already has that name.");
             return;
         }
 
-        nation.name = args[1];
+        if (Nation.registry.isNation(args[1])) {
+            BastionNotification.error(player, "Another nation already has that name.");
+            return;
+        }
 
+        nation.rename(args[1]);
 
-        BastionNotification.info(player, Component.empty().append(Component.text(
-                "Your nation has been renamed to "
-        ).append(
-                Component.text(nation.name).color(NamedTextColor.YELLOW)
-        )).append(Component.text(".")));
-
-        BastionNotification.info(nation, Component.empty().append(Component.text(
-                "Your nation has been renamed to "
+        BastionNotification.infoMessage(nation, Component.empty().append(Component.text(
+                player.getName() + " renamed your nation to "
         ).append(
                 Component.text(nation.name).color(NamedTextColor.YELLOW)
         )).append(Component.text(".")));
