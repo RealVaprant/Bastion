@@ -22,15 +22,29 @@ public class NationTabCompleter implements TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String @NotNull [] args) {
+
+
         if (args.length == 1) {
-            return new ArrayList<>(subCommands.keySet());
+            return filterCompletions(new ArrayList<>(subCommands.keySet()), args[0]);
         }
+
 
         NationSubCommand subCommand = subCommands.get(args[0]);
         if (subCommand != null){
             return subCommand.onTabComplete(commandSender, args);
         }
 
+
         return List.of();
+    }
+
+    public static List<String> filterCompletions(List<String> completions, String filter) {
+        List<String> matches = new ArrayList<>();
+        for (String entry : completions) {
+            if (entry.toLowerCase().startsWith(filter.toLowerCase())){
+                matches.add(entry);
+            }
+        }
+        return matches;
     }
 }

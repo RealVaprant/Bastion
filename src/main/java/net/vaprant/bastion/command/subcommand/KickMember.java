@@ -2,6 +2,7 @@ package net.vaprant.bastion.command.subcommand;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.vaprant.bastion.command.NationTabCompleter;
 import net.vaprant.bastion.nation.Authority;
 import net.vaprant.bastion.nation.Nation;
 import net.vaprant.bastion.player.BastionProfile;
@@ -85,10 +86,10 @@ public class KickMember implements NationSubCommand{
                 return List.of();
             }
 
-            return nation.getMembers().stream()
+            return NationTabCompleter.filterCompletions(nation.getMembers().stream()
                     .map(OfflinePlayer::getName)
                     .filter(Objects::nonNull)
-                    .toList();
+                    .toList(), args[1]);
         }
 
 

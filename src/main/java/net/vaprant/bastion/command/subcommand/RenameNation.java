@@ -62,4 +62,6 @@ public class RenameNation implements NationSubCommand {
                 Component.text(nation.name).color(NamedTextColor.YELLOW)
         )).append(Component.text(".")));
     }
+
+
 }

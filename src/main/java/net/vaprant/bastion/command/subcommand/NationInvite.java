@@ -5,6 +5,7 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.vaprant.bastion.Bastion;
+import net.vaprant.bastion.command.NationTabCompleter;
 import net.vaprant.bastion.nation.Authority;
 import net.vaprant.bastion.nation.Nation;
 import net.vaprant.bastion.player.BastionProfile;
@@ -128,6 +129,6 @@ public class NationInvite implements NationSubCommand {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, String[] args) {
-        return Bukkit.getServer().getOnlinePlayers().stream().map(Player::getName).toList();
+        return NationTabCompleter.filterCompletions(Bukkit.getServer().getOnlinePlayers().stream().map(Player::getName).toList(), args[1]);
     }
 }
