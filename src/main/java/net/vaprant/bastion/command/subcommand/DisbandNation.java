@@ -2,7 +2,7 @@ package net.vaprant.bastion.command.subcommand;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.vaprant.bastion.nation.Authority;
+import net.vaprant.bastion.nation.permission.Authority;
 import net.vaprant.bastion.nation.Nation;
 import net.vaprant.bastion.player.BastionProfile;
 import net.vaprant.bastion.util.BastionNotification;
@@ -26,7 +26,7 @@ public class DisbandNation implements NationSubCommand {
             return;
         }
 
-        Authority authority = nation.getAuthority(bastionPlayer);
+        Authority authority = nation.getAuthority(bastionPlayer.uuid);
 
         if (authority == Authority.OWNER) {
 

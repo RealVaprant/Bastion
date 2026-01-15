@@ -3,8 +3,9 @@ package net.vaprant.bastion.command.subcommand;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.vaprant.bastion.command.NationTabCompleter;
-import net.vaprant.bastion.nation.Authority;
+import net.vaprant.bastion.nation.permission.Authority;
 import net.vaprant.bastion.nation.Nation;
+import net.vaprant.bastion.nation.permission.PermissionNode;
 import net.vaprant.bastion.player.BastionProfile;
 import net.vaprant.bastion.util.BastionNotification;
 import org.bukkit.Bukkit;
@@ -12,7 +13,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,7 +34,7 @@ public class KickMember implements NationSubCommand{
             return;
         }
 
-        if (nation.getAuthority(bastionPlayer) != Authority.OWNER) {
+        if (nation.hasPermission(bastionPlayer.uuid, PermissionNode.KICK)) {
             BastionNotification.error(player, "Your authority is insufficient.");
         }
 

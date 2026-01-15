@@ -2,6 +2,8 @@ package net.vaprant.bastion.nation;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.vaprant.bastion.nation.permission.Authority;
+import net.vaprant.bastion.nation.permission.PermissionNode;
 import net.vaprant.bastion.player.BastionProfile;
 import net.vaprant.bastion.util.BastionNotification;
 import org.bukkit.Bukkit;
@@ -15,20 +17,44 @@ public class Nation {
 
     public final UUID uuid;
     public String name;
-    public UUID ownerId;
+    private  UUID ownerId;
     private final HashMap<UUID, Authority> members;
     private final Map<UUID, Integer> invitations;
     private final Map<UUID, Integer> joinRequests;
+    private final Map<Authority, Set<PermissionNode>> authorityPermissions;
     public boolean isDisbanded = false;
 
+
+    //TODO: Add a constructor for grabbing fields from disk.
     public Nation(String name, UUID ownerId) {
         this.uuid = UUID.randomUUID();
+        this.ownerId = ownerId;
         this.name = name;
         this.members = new HashMap<>();
         this.invitations = new HashMap<>();
-        this.joinRequests = new HashMap<>() {
-        };
+        this.joinRequests = new HashMap<>();
+
+        Map<Authority, Set<PermissionNode>> defaultPermissions = new HashMap<>();
+        for (Authority authority : Authority.values()) {
+            defaultPermissions.put(authority, authority.getDefaultPermissions());
+        }
+        this.authorityPermissions = defaultPermissions;
     }
+
+    public boolean hasPermission(UUID playerId, PermissionNode permissionNode) {
+        return authorityPermissions.get(getAuthority(playerId)).contains(permissionNode);
+    }
+
+    public UUID getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwner(UUID uuid) {
+        members.remove(this.ownerId);
+        members.put(this.ownerId, Authority.OFFICER);
+        this.ownerId = uuid;
+    }
+
 
     public UUID getUniqueId() {
         return this.uuid;
@@ -84,8 +110,8 @@ public class Nation {
     }
 
 
-    public Authority getAuthority(BastionProfile bastionPlayer) {
-        return this.members.get(bastionPlayer.uuid);
+    public Authority getAuthority(UUID playerId) {
+        return this.members.get(playerId);
     }
 
     public BastionProfile getOwner() {

@@ -3,7 +3,7 @@ package net.vaprant.bastion.command.subcommand;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
-import net.vaprant.bastion.nation.Authority;
+import net.vaprant.bastion.nation.permission.Authority;
 import net.vaprant.bastion.nation.Nation;
 import net.vaprant.bastion.player.BastionProfile;
 import net.vaprant.bastion.util.BastionNotification;

@@ -1,11 +1,7 @@
 package net.vaprant.bastion.nation;
 
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
-
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public class NationRegistry {

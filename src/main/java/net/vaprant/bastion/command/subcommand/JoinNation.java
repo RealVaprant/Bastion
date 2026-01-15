@@ -6,7 +6,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.vaprant.bastion.Bastion;
 import net.vaprant.bastion.command.NationTabCompleter;
-import net.vaprant.bastion.nation.Authority;
+import net.vaprant.bastion.nation.permission.Authority;
 import net.vaprant.bastion.nation.Nation;
 import net.vaprant.bastion.player.BastionProfile;
 import net.vaprant.bastion.util.BastionNotification;
