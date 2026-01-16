@@ -30,7 +30,7 @@ public class RenameNation implements NationSubCommand {
             return;
         }
 
-        if (nation.hasPermission(bastionPlayer.uuid, PermissionNode.RENAME)) {
+        if (!bastionPlayer.hasPermission(PermissionNode.RENAME)) {
             BastionNotification.error(player, "Your authority is insufficient.");
             return;
         }
@@ -76,5 +76,16 @@ public class RenameNation implements NationSubCommand {
             return List.of(nation.name);
         }
         return List.of();
+    }
+
+    @Override
+    public boolean isAccessible(CommandSender sender) {
+        if (!(sender instanceof Player player)){
+            return false;
+        }
+
+        BastionProfile bastionProfile = BastionProfile.registry.getPlayer(player.getUniqueId());
+
+        return (bastionProfile.getNation() != null && bastionProfile.hasPermission(PermissionNode.RENAME));
     }
 }

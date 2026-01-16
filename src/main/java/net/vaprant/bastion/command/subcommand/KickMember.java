@@ -34,8 +34,9 @@ public class KickMember implements NationSubCommand{
             return;
         }
 
-        if (nation.hasPermission(bastionPlayer.uuid, PermissionNode.KICK)) {
+        if (!bastionPlayer.hasPermission(PermissionNode.KICK)) {
             BastionNotification.error(player, "Your authority is insufficient.");
+            return;
         }
 
         OfflinePlayer subject = Bukkit.getOfflinePlayer(args[1]);
@@ -54,6 +55,11 @@ public class KickMember implements NationSubCommand{
             BastionNotification.error(player, "You cannot kick yourself.");
             return;
         }
+
+        if (!bastionPlayer.getAuthority().isHigherThan(nation.getAuthority(subject.getUniqueId()))) {
+            BastionNotification.error(player, "Your authority is insufficient.");
+        }
+
 
         BastionProfile bastionProfile = BastionProfile.registry.getPlayer(subject.getUniqueId());
         nation.removeMember(bastionProfile);
@@ -94,5 +100,16 @@ public class KickMember implements NationSubCommand{
 
 
         return List.of();
+    }
+
+    @Override
+    public boolean isAccessible(CommandSender sender) {
+        if (!(sender instanceof Player player)){
+            return false;
+        }
+
+        BastionProfile bastionProfile = BastionProfile.registry.getPlayer(player.getUniqueId());
+
+        return (bastionProfile.getNation() != null && bastionProfile.hasPermission(PermissionNode.KICK));
     }
 }

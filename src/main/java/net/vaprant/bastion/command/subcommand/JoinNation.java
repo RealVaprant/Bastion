@@ -68,10 +68,12 @@ public class JoinNation implements NationSubCommand {
 
                 // Nation owner's notification of the join request.
                 BastionNotification.infoMessage((Player) nation.getOwner().getPlayer(), Component.text(
-                                player.getName() + " requested to join "
+                                player.getName() + " wants to join "
 
                         ).append(
                                 Component.text(nation.name).color(NamedTextColor.YELLOW)
+                        ).append(
+                                Component.text(".")
                         ).decorate(TextDecoration.UNDERLINED)
                         .hoverEvent(
                                 Component.text("Click to invite!").color(NamedTextColor.GREEN)
@@ -131,5 +133,14 @@ public class JoinNation implements NationSubCommand {
             return NationTabCompleter.filterCompletions(Nation.registry.getAllNationNames(), args[1]);
         }
         return List.of();
+    }
+
+    @Override
+    public boolean isAccessible(CommandSender sender) {
+        if (!(sender instanceof Player player)){
+            return false;
+        }
+
+        return (BastionProfile.registry.getPlayer(player.getUniqueId()).getNation() == null);
     }
 }

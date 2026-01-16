@@ -12,4 +12,8 @@ public interface NationSubCommand {
     default List<String> onTabComplete(CommandSender sender, String[] args) {
         return Collections.emptyList();
     }
+
+    default boolean isAccessible(CommandSender sender) {
+        return true;
+    }
 }

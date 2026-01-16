@@ -43,4 +43,13 @@ public class LeaveNation implements NationSubCommand{
         }
 
     }
+
+    @Override
+    public boolean isAccessible(CommandSender sender) {
+        if (!(sender instanceof Player player)){
+            return false;
+        }
+
+        return (BastionProfile.registry.getPlayer(player.getUniqueId()).getNation() != null);
+    }
 }

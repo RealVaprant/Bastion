@@ -35,7 +35,7 @@ public class NationInvite implements NationSubCommand {
             return;
         }
 
-        if (nation.hasPermission(bastionPlayer.uuid, PermissionNode.INVITE)) {
+        if (!bastionPlayer.hasPermission(PermissionNode.INVITE)) {
             BastionNotification.error(player, "Your authority is insufficient.");
         }
 
@@ -122,12 +122,23 @@ public class NationInvite implements NationSubCommand {
                     player.getName() +
                     " invited " +
                     recipient.getName() +
-                    " to join your nation."
+                    "."
                 ));
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, String[] args) {
         return NationTabCompleter.filterCompletions(Bukkit.getServer().getOnlinePlayers().stream().map(Player::getName).toList(), args[1]);
+    }
+
+    @Override
+    public boolean isAccessible(CommandSender sender) {
+        if (!(sender instanceof Player player)){
+            return false;
+        }
+
+        BastionProfile bastionProfile = BastionProfile.registry.getPlayer(player.getUniqueId());
+
+        return (bastionProfile.getNation() != null && bastionProfile.hasPermission(PermissionNode.INVITE));
     }
 }

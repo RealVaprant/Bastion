@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.vaprant.bastion.nation.permission.Authority;
 import net.vaprant.bastion.nation.Nation;
+import net.vaprant.bastion.nation.permission.PermissionNode;
 import net.vaprant.bastion.player.BastionProfile;
 import net.vaprant.bastion.util.BastionNotification;
 import org.bukkit.command.CommandSender;
@@ -17,23 +18,20 @@ public class DisbandNation implements NationSubCommand {
             return;
         }
 
-        BastionProfile bastionPlayer = BastionProfile.registry.getPlayer(player.getUniqueId());
+        BastionProfile bastionProfile = BastionProfile.registry.getPlayer(player.getUniqueId());
 
-        Nation nation = bastionPlayer.getNation();
+        Nation nation = bastionProfile.getNation();
 
         if (nation == null) {
             BastionNotification.error(player, "You aren't in a nation.");
             return;
         }
 
-        Authority authority = nation.getAuthority(bastionPlayer.uuid);
-
-        if (authority == Authority.OWNER) {
+        if (nation.isOwner(bastionProfile.uuid)) {
 
             BastionNotification.broadcast(Component.empty().append(
-                    Component.text(nation.name).color(NamedTextColor.YELLOW)).append(
-                    Component.text(" has disbanded.")
-                    ));
+                    Component.text(nation.name).color(NamedTextColor.YELLOW)
+            ).append(Component.text(" has disbanded.")));
 
             BastionNotification.info(nation, Component.text("Your nation has disbanded."));
 
@@ -42,5 +40,16 @@ public class DisbandNation implements NationSubCommand {
         else {
             BastionNotification.error(player, "Your authority is insufficient.");
         }
+    }
+
+    @Override
+    public boolean isAccessible(CommandSender sender) {
+        if (!(sender instanceof Player player)){
+            return false;
+        }
+
+        BastionProfile bastionProfile = BastionProfile.registry.getPlayer(player.getUniqueId());
+
+        return (bastionProfile.getNation() != null && bastionProfile.getAuthority() == Authority.OWNER);
     }
 }

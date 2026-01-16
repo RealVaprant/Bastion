@@ -1,6 +1,8 @@
 package net.vaprant.bastion.player;
 
 import net.vaprant.bastion.nation.Nation;
+import net.vaprant.bastion.nation.permission.Authority;
+import net.vaprant.bastion.nation.permission.PermissionNode;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
@@ -25,14 +27,23 @@ public class BastionProfile {
 
     }
 
+    public boolean hasPermission(PermissionNode permissionNode) {
+        return this.nation != null && this.nation.hasPermission(this.uuid, permissionNode);
+    }
 
+    public Authority getAuthority() {
+        if (this.nation == null){
+            return null;
+        }
+        return this.nation.getAuthority(this.uuid);
+    }
 
     public OfflinePlayer getPlayer() {
         return Bukkit.getPlayer(uuid);
     }
 
     public Nation getNation() {
-        return nation;
+        return this.nation;
     }
 
     public void setNation(Nation nation) {

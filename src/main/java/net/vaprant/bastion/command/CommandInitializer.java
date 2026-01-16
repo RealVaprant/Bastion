@@ -18,6 +18,8 @@ public class CommandInitializer {
         subCommands.put("invite", new NationInvite());
         subCommands.put("join", new JoinNation());
         subCommands.put("kick", new KickMember());
+        subCommands.put("permissions", new ManagePermissions());
+        subCommands.put("authority", new ManageAuthority());
 
         Objects.requireNonNull(plugin.getCommand("nation")).setExecutor(new NationCommand(subCommands));
         Objects.requireNonNull(plugin.getCommand("nation")).setTabCompleter(new NationTabCompleter(subCommands));

@@ -25,12 +25,22 @@ public class NationTabCompleter implements TabCompleter {
 
 
         if (args.length == 1) {
-            return filterCompletions(new ArrayList<>(subCommands.keySet()), args[0]);
+
+            Map<String, NationSubCommand> availableSubCommands = new HashMap<>();
+            for (Map.Entry<String, NationSubCommand> entry : subCommands.entrySet()) {
+                if (entry.getValue().isAccessible(commandSender)) {
+                    availableSubCommands.put(entry.getKey(), entry.getValue());
+                }
+            }
+
+            return filterCompletions(
+                    new ArrayList<>(availableSubCommands.keySet())
+                    , args[0]
+            );
         }
 
-
         NationSubCommand subCommand = subCommands.get(args[0]);
-        if (subCommand != null){
+        if (subCommand != null && subCommand.isAccessible(commandSender)){
             return subCommand.onTabComplete(commandSender, args);
         }
 

@@ -11,32 +11,36 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class NationCommand implements CommandExecutor {
 
     private final HashMap<String, NationSubCommand> subCommands;
-    private final String arguments;
 
     public NationCommand(HashMap<String, NationSubCommand> subCommands) {
-
-        // This creates the usage string, without having to repeat the same arguments.
-        this.arguments = "( " + String.join(" | ", subCommands.keySet()) + " )";
-
         this.subCommands = subCommands;
     }
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String @NotNull [] args) {
 
+        Map<String, NationSubCommand> availableSubCommands = new HashMap<>();
+        for (Map.Entry<String, NationSubCommand> entry : subCommands.entrySet()) {
+            if (entry.getValue().isAccessible(commandSender)) {
+                availableSubCommands.put(entry.getKey(), entry.getValue());
+            }
+        }
+        String availableArguements =  "( " + String.join(" | ", availableSubCommands.keySet()) + " )";
+
         if (args.length == 0) {
-            BastionNotification.error(commandSender, "/" + command.getName() + " " + arguments);
+            BastionNotification.error(commandSender, "/" + command.getName() + " " + availableArguements);
             return true;
         }
 
         NationSubCommand nationSubCommand = subCommands.get(args[0]);
 
         if (nationSubCommand == null) {
-            BastionNotification.error(commandSender, "/" + command.getName() + " " + arguments);
+            BastionNotification.error(commandSender, "/" + command.getName() + " " + availableArguements);
             return true;
         }
 

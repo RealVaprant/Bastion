@@ -36,13 +36,35 @@ public class Nation {
 
         Map<Authority, Set<PermissionNode>> defaultPermissions = new HashMap<>();
         for (Authority authority : Authority.values()) {
-            defaultPermissions.put(authority, authority.getDefaultPermissions());
+            defaultPermissions.put(authority, new HashSet<>(authority.getDefaultPermissions()));
         }
         this.authorityPermissions = defaultPermissions;
     }
 
+    public void setPermission(Authority authority, PermissionNode permissionNode, boolean isPermitted) {
+        if (isPermitted) {
+            authorityPermissions.get(authority).add(permissionNode);
+        }
+        else {
+            authorityPermissions.get(authority).remove(permissionNode);
+        }
+    }
+
+    public void setAuthority(UUID playerId, Authority authority) {
+        members.remove(playerId);
+        members.put(playerId, authority);
+    }
+
     public boolean hasPermission(UUID playerId, PermissionNode permissionNode) {
         return authorityPermissions.get(getAuthority(playerId)).contains(permissionNode);
+    }
+
+    public boolean isOwner(UUID playerId) {
+        return ownerId == playerId;
+    }
+
+    public boolean hasPermission(Authority authority, PermissionNode permissionNode) {
+        return authorityPermissions.get(authority).contains(permissionNode);
     }
 
     public UUID getOwnerId() {
@@ -159,10 +181,9 @@ public class Nation {
 
         if (this.members.isEmpty()) {
             this.disband();
-            BastionNotification.broadcast(
+            BastionNotification.broadcast(Component.empty().append(
                     Component.text(this.name).color(NamedTextColor.YELLOW)
-                            .append(Component.text(" has been disbanded.")
-                                    .color(NamedTextColor.RED)));
+            ).append(Component.text(" has disbanded.")));
         }
     }
 

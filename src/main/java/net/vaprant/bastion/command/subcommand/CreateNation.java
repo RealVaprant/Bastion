@@ -68,7 +68,15 @@ public class CreateNation implements NationSubCommand {
             BastionNotification.warning(sender, "An empty nation has been created.");
         }
 
+    }
 
 
+    @Override
+    public boolean isAccessible(CommandSender sender) {
+        if (!(sender instanceof Player player)){
+            return false;
+        }
+
+        return (BastionProfile.registry.getPlayer(player.getUniqueId()).getNation() == null);
     }
 }
